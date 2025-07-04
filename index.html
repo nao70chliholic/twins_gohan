@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>双子にごはん!?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>双子にごはん!?</h1>
+    <div id="game-container">
+        <div id="start-screen">
+            <h2>双子にごはん!?</h2>
+            <button id="start-button">スタート</button>
+        </div>
+        <div id="towa" class="cat"></div>
+        <div id="setsuna" class="cat"></div>
+        <div id="player-area">🍙</div>
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 60</div>
+        <div id="combo-area" class="hidden">COMBO: 0</div>
+        <div id="fever-time" class="hidden">FEVER TIME!</div>
+        <div id="game-over" class="hidden">
+            <p>ゲームオーバー</p>
+            <button id="restart-button">もう一度</button>
+        </div>
+        <div id="penalty-box" class="hidden">チーン！</div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgm" src="bgm.mp3" loop></audio>
+    <audio id="fever-bgm" src="fever.mp3" loop></audio>
+    <audio id="shoot-sound" src="shoot.wav"></audio>
+    <audio id="hit-sound" src="hit.wav"></audio>
+    <audio id="penalty-sound" src="penalty.wav"></audio>
+    <audio id="fever-start-sound" src="fever_start.wav"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

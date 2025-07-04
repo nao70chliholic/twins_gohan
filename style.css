@@ -1,0 +1,214 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f0f0;
+    touch-action: none; /* Disable pinch-zoom */
+}
+
+#game-container {
+    position: relative;
+    width: 400px;
+    height: 70vh;
+    max-height: 600px;
+    border: 2px solid #333;
+    background: linear-gradient(to bottom, #87CEEB 0%, #f0f0f0 100%);
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 20;
+    text-align: center;
+}
+
+#start-screen h2 {
+    font-size: 48px;
+    text-shadow: 2px 2px 4px #000;
+}
+
+#start-button {
+    font-size: 24px;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    background-color: #FF4081;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#start-button:hover {
+    transform: scale(1.1);
+}
+
+.cat {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    /* Combine transforms for smooth animation */
+    transform: scale(0.5);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.cat.hungry {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+#towa {
+    background-image: url('images/towa.png');
+}
+
+#setsuna {
+    background-image: url('images/setsuna.png');
+    /* Initially flipped */
+    transform: scaleX(-1) scale(0.5);
+}
+
+/* Adjust hungry and hit states for Setsuna to include the flip */
+#setsuna.hungry {
+    transform: scaleX(-1) scale(1);
+}
+
+.hit {
+    opacity: 0 !important;
+    transform: scale(0) !important;
+}
+
+#setsuna.hit {
+    transform: scaleX(-1) scale(0) !important;
+}
+
+#player-area {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}
+
+.onigiri {
+    position: absolute;
+    font-size: 30px;
+    user-select: none;
+    pointer-events: none; /* Prevent onigiri from blocking mouse events */
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+#timer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+}
+
+#combo-area {
+    position: absolute;
+    top: 40px; /* Below score */
+    left: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #FFEB3B; /* Yellow */
+    text-shadow: 1px 1px 2px #000;
+}
+
+#fever-time {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.5);
+    font-size: 48px;
+    font-weight: bold;
+    color: #ff4081;
+    text-shadow: 3px 3px 0px #fff, -3px -3px 0px #fff, 3px -3px 0px #fff, -3px 3px 0px #fff;
+    animation: fever-animation 0.5s infinite alternate;
+    z-index: 10;
+}
+
+@keyframes fever-animation {
+    from { transform: translate(-50%, -50%) scale(1.5) rotate(-5deg); }
+    to { transform: translate(-50%, -50%) scale(1.6) rotate(5deg); }
+}
+
+#game-container.fever {
+    animation: fever-bg 0.5s infinite alternate;
+}
+
+@keyframes fever-bg {
+    from { box-shadow: 0 0 20px 10px #ff4081, 0 0 30px 20px #FFEB3B; }
+    to { box-shadow: 0 0 20px 10px #FFEB3B, 0 0 30px 20px #ff4081; }
+}
+
+#game-over, #penalty-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    font-weight: bold;
+    color: #D32F2F; /* Red */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#restart-button {
+    font-size: 20px;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    cursor: pointer;
+}
+
+#restart-button:hover {
+    background-color: #45a049;
+}
+
+
+.hidden {
+    display: none;
+}
