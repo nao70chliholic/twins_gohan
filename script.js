@@ -14,11 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameOverDisplay = document.getElementById('game-over');
 
     const bgm = document.getElementById('bgm');
-    const feverBgm = document.getElementById('fever-bgm');
-    const shootSound = document.getElementById('shoot-sound');
-    const hitSound = document.getElementById('hit-sound');
-    const penaltySound = document.getElementById('penalty-sound');
-    const feverStartSound = document.getElementById('fever-start-sound');
 
     let score = 0;
     let combo = 0;
@@ -40,10 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameRect = gameContainer.getBoundingClientRect();
 
     // --- Sound Control ---
-    function playSound(sound) {
-        sound.currentTime = 0;
-        sound.play().catch(e => console.log("Sound play failed: " + e));
-    }
+    // function playSound(sound) {
+    //     sound.currentTime = 0;
+    //     sound.play().catch(e => console.log("Sound play failed: " + e));
+    // }
 
     function startBgm() {
         if (isBgmPlaying) return;
@@ -55,8 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopAllBgm() {
         bgm.pause();
         bgm.currentTime = 0;
-        feverBgm.pause();
-        feverBgm.currentTime = 0;
+        bgm.playbackRate = 1; // Reset playback rate
         isBgmPlaying = false;
     }
 
@@ -137,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showPenalty() {
         if (isFever) return;
-        playSound(penaltySound);
+        // playSound(penaltySound);
         combo = 0;
         updateComboDisplay();
         canShoot = false;
@@ -153,9 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startFever() {
         isFever = true;
-        playSound(feverStartSound);
-        bgm.pause();
-        feverBgm.play();
+        // playSound(feverStartSound);
+        bgm.playbackRate = 1.5; // Increase playback rate for fever time
 
         feverDisplay.classList.remove('hidden');
         gameContainer.classList.add('fever');
@@ -168,9 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function endFever() {
         isFever = false;
-        feverBgm.pause();
-        feverBgm.currentTime = 0;
-        if(timeLeft > 0) bgm.play();
+        bgm.playbackRate = 1; // Reset playback rate
 
         feverDisplay.classList.add('hidden');
         gameContainer.classList.remove('fever');
@@ -222,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function feedCat(cat, isInitialReset = false) {
         if (!isInitialReset) {
-            playSound(hitSound);
+            // playSound(hitSound);
             cat.classList.add('hit');
 
             // Show score popup
@@ -279,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function shootOnigiri(velX, velY) {
-        playSound(shootSound);
+        // playSound(shootSound);
         const onigiri = document.createElement('div');
         onigiri.textContent = '🐟'; // Changed to fish emoji
         onigiri.className = 'onigiri';
