@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+
 body {
     display: flex;
     flex-direction: column;
@@ -5,7 +7,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Mochiy Pop One', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     background-color: #f0f0f0;
     touch-action: none; /* Disable pinch-zoom */
 }
@@ -21,13 +23,13 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-#start-screen {
+#start-screen, #game-over {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,26 +37,82 @@ body {
     color: white;
     z-index: 20;
     text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 #start-screen h2 {
     font-size: 48px;
-    text-shadow: 2px 2px 4px #000;
+    text-shadow: 3px 3px 6px #000;
+    margin-bottom: 20px;
+    animation: title-float 2s ease-in-out infinite;
 }
 
-#start-button {
+@keyframes title-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+#start-button, #restart-button {
     font-size: 24px;
     padding: 12px 30px;
     border: none;
     border-radius: 10px;
-    background-color: #FF4081;
     color: white;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 
-#start-button:hover {
+#start-button {
+    background-color: #FF4081;
+}
+
+#restart-button {
+    background-color: #4CAF50; /* Green */
+    margin-top: 15px;
+}
+
+#start-button:hover, #restart-button:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+.screen-images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.towa-image-start, .setsuna-image-start,
+.towa-image-end, .setsuna-image-end {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.towa-image-start {
+    animation: float-left 3s ease-in-out infinite;
+}
+
+.setsuna-image-start {
+    animation: float-right 3s ease-in-out infinite;
+}
+
+@keyframes float-left {
+    0%, 100% { transform: translateY(0) translateX(-5px) rotate(-5deg); }
+    50% { transform: translateY(-10px) translateX(5px) rotate(5deg); }
+}
+
+@keyframes float-right {
+    0%, 100% { transform: translateY(0) translateX(5px) rotate(5deg); }
+    50% { transform: translateY(-10px) translateX(-5px) rotate(-5deg); }
+}
+
+.towa-image-end, .setsuna-image-end {
+    opacity: 0.8;
 }
 
 .cat {
@@ -65,7 +123,6 @@ body {
     background-size: cover;
     background-position: center;
     opacity: 0;
-    /* Combine transforms for smooth animation */
     transform: scale(0.5);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     pointer-events: none;
@@ -83,11 +140,9 @@ body {
 
 #setsuna {
     background-image: url('images/setsuna.png');
-    /* Initially flipped */
     transform: scaleX(-1) scale(0.5);
 }
 
-/* Adjust hungry and hit states for Setsuna to include the flip */
 #setsuna.hungry {
     transform: scaleX(-1) scale(1);
 }
@@ -111,44 +166,45 @@ body {
     font-size: 50px;
     text-align: center;
     cursor: pointer;
-    user-select: none; /* Prevent text selection */
+    user-select: none;
 }
 
 .onigiri {
     position: absolute;
     font-size: 30px;
     user-select: none;
-    pointer-events: none; /* Prevent onigiri from blocking mouse events */
+    pointer-events: none;
+}
+
+#score, #timer, #combo-area {
+    position: absolute;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    z-index: 5;
+    background-color: rgba(0,0,0,0.2);
+    padding: 5px 15px;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.5);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-size: 20px;
 }
 
 #score {
-    position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
 }
 
 #timer {
-    position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
 }
 
 #combo-area {
-    position: absolute;
-    top: 40px; /* Below score */
+    top: 60px; /* Adjusted position */
     left: 10px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #FFEB3B; /* Yellow */
-    text-shadow: 1px 1px 2px #000;
+    color: #FFEB3B;
+    background-color: rgba(255, 100, 100, 0.3);
 }
 
 #fever-time {
@@ -178,37 +234,65 @@ body {
     to { box-shadow: 0 0 20px 10px #FFEB3B, 0 0 30px 20px #ff4081; }
 }
 
-#game-over, #penalty-box {
+#game-over p {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px #000;
+    margin: 20px 0;
+}
+
+
+#penalty-box {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 36px;
     font-weight: bold;
-    color: #D32F2F; /* Red */
+    color: #D32F2F;
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px 40px;
     border-radius: 10px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    white-space: nowrap;
 }
 
-#restart-button {
-    font-size: 20px;
-    padding: 10px 20px;
-    margin-top: 15px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    cursor: pointer;
+.speech-bubble {
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 15;
+    animation: fadeOutUp 1.5s forwards;
 }
 
-#restart-button:hover {
-    background-color: #45a049;
+.score-popup {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFEB3B;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 15;
+    animation: fadeOutUp 1s forwards;
 }
 
+@keyframes fadeOutUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
 
 .hidden {
-    display: none;
+    display: none !important;
 }

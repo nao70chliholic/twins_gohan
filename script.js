@@ -30,6 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const FEVER_THRESHOLD = 10;
     const FEVER_DURATION = 10;
 
+    // Cat appearance parameters
+    const CAT_SIZE = 80; // From CSS
+    const TOWA_MIN_DELAY = 1000; // 1 second
+    const TOWA_MAX_DELAY = 3000; // 3 seconds
+    const SETSUNA_MIN_DELAY = 3000; // 3 seconds
+    const SETSUNA_MAX_DELAY = 7000; // 7 seconds
+
     const gameRect = gameContainer.getBoundingClientRect();
 
     // --- Sound Control ---
@@ -55,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Game State ---
     function startGame() {
-        startScreen.classList.add('hidden');
+        startScreen.style.display = 'none';
         resetGame();
     }
 
@@ -86,18 +93,20 @@ document.addEventListener('DOMContentLoaded', () => {
         feedCat(setsuna, true);
     }
 
-    function updateScore(points = 1) {
-        score += isFever ? points * 2 : points;
-        scoreDisplay.textContent = `Score: ${score}`;
+    function updateScore(points = 0) { // Default to 0 so initial call doesn't add points
+        if (points > 0) {
+            score += isFever ? points * 2 : points;
+        }
+        scoreDisplay.textContent = `🐟 ${score}`;
     }
 
     function updateTimer() {
-        timerDisplay.textContent = `Time: ${timeLeft}`;
+        timerDisplay.textContent = `⏰ ${timeLeft}`;
     }
 
     function updateComboDisplay() {
         if (combo > 1) {
-            comboArea.textContent = `COMBO: ${combo}`;
+            comboArea.textContent = `🔥 COMBO: ${combo}`;
             comboArea.classList.remove('hidden');
         } else {
             comboArea.classList.add('hidden');
@@ -170,24 +179,77 @@ document.addEventListener('DOMContentLoaded', () => {
     function makeCatHungry(cat) {
         if (timeLeft <= 0 || cat.classList.contains('hungry')) return;
         cat.classList.remove('hit');
-        const catSize = 80;
-        const maxX = gameRect.width - catSize;
-        const maxY = gameRect.height - catSize - 100;
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
+        
+        const catSize = CAT_SIZE;
+        let randomX, randomY;
+
+        if (cat.id === 'towa') {
+            const maxX = gameRect.width - catSize;
+            const maxY = gameRect.height - catSize - 100; // Adjust for player area
+            randomX = Math.random() * maxX;
+            randomY = Math.random() * (maxY * 0.7); // More towards top
+        } else { // setsuna
+            const maxX = gameRect.width - catSize;
+            const maxY = gameRect.height - catSize - 100; // Adjust for player area
+            // Setsuna: more central
+            const centralXRange = maxX * 0.6;
+            const centralYRange = maxY * 0.5;
+            
+            randomX = (Math.random() * centralXRange) + (maxX - centralXRange) / 2;
+            randomY = (Math.random() * centralYRange) + (maxY - centralYRange) / 2;
+        }
+
         cat.style.left = `${randomX}px`;
         cat.style.top = `${randomY}px`;
         cat.classList.add('hungry');
+
+        // Show speech bubble
+        const speechBubble = document.createElement('div');
+        speechBubble.className = 'speech-bubble';
+        speechBubble.textContent = 'おなかすいた！';
+        gameContainer.appendChild(speechBubble);
+
+        // Position the speech bubble above the cat
+        const catRect = cat.getBoundingClientRect();
+        const gameContainerRect = gameContainer.getBoundingClientRect();
+        speechBubble.style.left = `${catRect.left - gameContainerRect.left + catRect.width / 2 - speechBubble.offsetWidth / 2}px`;
+        speechBubble.style.top = `${catRect.top - gameContainerRect.top - speechBubble.offsetHeight - 10}px`;
+
+        setTimeout(() => {
+            speechBubble.remove();
+        }, 1500); // Remove after 1.5 seconds
     }
 
     function feedCat(cat, isInitialReset = false) {
         if (!isInitialReset) {
             playSound(hitSound);
             cat.classList.add('hit');
+
+            // Show score popup
+            const scorePopup = document.createElement('div');
+            scorePopup.className = 'score-popup';
+            const points = isFever ? 200 : 100; // Example: 100 points, 200 in fever
+            scorePopup.textContent = `+${points}`;
+            gameContainer.appendChild(scorePopup);
+
+            // Position the score popup above the cat
+            const catRect = cat.getBoundingClientRect();
+            const gameContainerRect = gameContainer.getBoundingClientRect();
+            scorePopup.style.left = `${catRect.left - gameContainerRect.left + catRect.width / 2 - scorePopup.offsetWidth / 2}px`;
+            scorePopup.style.top = `${catRect.top - gameContainerRect.top - scorePopup.offsetHeight - 20}px`;
+
+            setTimeout(() => {
+                scorePopup.remove();
+            }, 1000); // Remove after 1 second
         }
         cat.classList.remove('hungry');
         if (timeLeft > 0) {
-            const delay = isFever ? (Math.random() * 1000 + 500) : (Math.random() * 3000 + 1500);
+            let delay;
+            if (cat.id === 'towa') {
+                delay = isFever ? (Math.random() * 500 + 250) : (Math.random() * (TOWA_MAX_DELAY - TOWA_MIN_DELAY) + TOWA_MIN_DELAY);
+            } else { // setsuna
+                delay = isFever ? (Math.random() * 1000 + 500) : (Math.random() * (SETSUNA_MAX_DELAY - SETSUNA_MIN_DELAY) + SETSUNA_MIN_DELAY);
+            }
             setTimeout(() => makeCatHungry(cat), delay);
         }
     }
@@ -196,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleInteractionStart(e) {
         if (!canShoot) return;
+        startBgm(); // Try to start BGM on first interaction
         const touch = e.type === 'touchstart' ? e.touches[0] : e;
         startX = touch.clientX;
         startY = touch.clientY;
@@ -218,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function shootOnigiri(velX, velY) {
         playSound(shootSound);
         const onigiri = document.createElement('div');
-        onigiri.textContent = '🍙';
+        onigiri.textContent = '🐟'; // Changed to fish emoji
         onigiri.className = 'onigiri';
         const playerRect = playerArea.getBoundingClientRect();
         const startLeft = playerRect.left + playerRect.width / 2 - gameRect.left;
@@ -241,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             [towa, setsuna].forEach(cat => {
                 if (cat.classList.contains('hungry') && isColliding(onigiri, cat)) {
-                    updateScore(1);
+                    updateScore(100);
                     combo++;
                     updateComboDisplay();
                     if (combo === FEVER_THRESHOLD && !isFever) {

@@ -3,24 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>双子にごはん!?</title>
-    <link rel="stylesheet" href="style.css">
+    <title>トワセツにごはん!?</title>
+    <link rel="stylesheet" href="style.css?v=1">
 </head>
 <body>
-    <h1>双子にごはん!?</h1>
+    <h1>トワセツに<br>ごはん!?</h1>
     <div id="game-container">
         <div id="start-screen">
-            <h2>双子にごはん!?</h2>
+            <div class="screen-images">
+                <img src="images/towa.png" alt="Towa" class="towa-image-start">
+                <img src="images/setsuna.png" alt="Setsuna" class="setsuna-image-start">
+            </div>
+            <h2>トワセツに<br>ごはん!?</h2>
             <button id="start-button">スタート</button>
         </div>
         <div id="towa" class="cat"></div>
         <div id="setsuna" class="cat"></div>
-        <div id="player-area">🍙</div>
+        <div id="player-area">🐟</div>
         <div id="score">Score: 0</div>
         <div id="timer">Time: 60</div>
         <div id="combo-area" class="hidden">COMBO: 0</div>
         <div id="fever-time" class="hidden">FEVER TIME!</div>
         <div id="game-over" class="hidden">
+            <div class="screen-images">
+                <img src="images/towa.png" alt="Towa" class="towa-image-end">
+                <img src="images/setsuna.png" alt="Setsuna" class="setsuna-image-end">
+            </div>
             <p>ゲームオーバー</p>
             <button id="restart-button">もう一度</button>
         </div>
