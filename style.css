@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #f39c12;
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --white-color: #ffffff;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --font-family: 'Noto Sans JP', sans-serif;
+}
 
 body {
     display: flex;
@@ -7,9 +18,18 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    font-family: 'Mochiy Pop One', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f0f0f0;
-    touch-action: none; /* Disable pinch-zoom */
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    touch-action: none;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 15px;
+    line-height: 1.4;
 }
 
 #game-container {
@@ -17,10 +37,11 @@ body {
     width: 400px;
     height: 70vh;
     max-height: 600px;
-    border: 2px solid #333;
-    background: linear-gradient(to bottom, #87CEEB 0%, #f0f0f0 100%);
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 100%);
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 #start-screen, #game-over {
@@ -29,102 +50,99 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: white;
+    color: var(--white-color);
     z-index: 20;
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
+    backdrop-filter: blur(5px);
 }
 
 #start-screen h2 {
-    font-size: 48px;
-    text-shadow: 3px 3px 6px #000;
-    margin-bottom: 20px;
-    animation: title-float 2s ease-in-out infinite;
+    font-size: 52px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-bottom: 25px;
+    animation: title-pop 1.5s ease-out forwards;
 }
 
-@keyframes title-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+@keyframes title-pop {
+    0% { transform: scale(0.8); opacity: 0; }
+    80% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
 }
+
 
 #start-button, #restart-button {
-    font-size: 24px;
-    padding: 12px 30px;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 15px 40px;
     border: none;
-    border-radius: 10px;
-    color: white;
+    border-radius: 50px;
+    color: var(--white-color);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 #start-button {
-    background-color: #FF4081;
+    background: linear-gradient(45deg, var(--primary-color), #8e44ad);
 }
 
 #restart-button {
-    background-color: #4CAF50; /* Green */
-    margin-top: 15px;
+    background: linear-gradient(45deg, var(--success-color), #16a085);
+    margin-top: 20px;
 }
 
 #start-button:hover, #restart-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 .screen-images {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     width: 100%;
 }
 
 .towa-image-start, .setsuna-image-start,
 .towa-image-end, .setsuna-image-end {
-    width: 120px;
-    height: 120px;
+    width: 130px;
+    height: 130px;
     object-fit: contain;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
 }
 
 .towa-image-start {
-    animation: float-left 3s ease-in-out infinite;
+    animation: float-subtle 3s ease-in-out infinite;
 }
 
 .setsuna-image-start {
-    animation: float-right 3s ease-in-out infinite;
+    animation: float-subtle 3s ease-in-out infinite 0.5s;
 }
 
-@keyframes float-left {
-    0%, 100% { transform: translateY(0) translateX(-5px) rotate(-5deg); }
-    50% { transform: translateY(-10px) translateX(5px) rotate(5deg); }
-}
-
-@keyframes float-right {
-    0%, 100% { transform: translateY(0) translateX(5px) rotate(5deg); }
-    50% { transform: translateY(-10px) translateX(-5px) rotate(-5deg); }
-}
-
-.towa-image-end, .setsuna-image-end {
-    opacity: 0.8;
+@keyframes float-subtle {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
 }
 
 .cat {
     position: absolute;
     width: 80px;
     height: 80px;
-    border-radius: 50%;
-    background-size: cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
     opacity: 0;
     transform: scale(0.5);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;
 }
 
@@ -132,6 +150,12 @@ body {
     opacity: 1;
     transform: scale(1);
     pointer-events: auto;
+    animation: cat-appear 0.5s ease-out;
+}
+
+@keyframes cat-appear {
+    from { transform: scale(0.8) rotate(-15deg); }
+    to { transform: scale(1) rotate(0deg); }
 }
 
 #towa {
@@ -140,156 +164,172 @@ body {
 
 #setsuna {
     background-image: url('images/setsuna.png');
-    transform: scaleX(-1) scale(0.5);
-}
-
-#setsuna.hungry {
-    transform: scaleX(-1) scale(1);
 }
 
 .hit {
+    transition: opacity 0.2s ease, transform 0.2s ease;
     opacity: 0 !important;
-    transform: scale(0) !important;
-}
-
-#setsuna.hit {
-    transform: scaleX(-1) scale(0) !important;
+    transform: scale(1.2) !important;
 }
 
 #player-area {
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 60px;
-    font-size: 50px;
+    width: 70px;
+    height: 70px;
+    font-size: 60px;
     text-align: center;
     cursor: pointer;
     user-select: none;
+    transition: transform 0.2s ease;
+}
+
+#player-area:active {
+    transform: translateX(-50%) scale(0.9);
 }
 
 .onigiri {
     position: absolute;
-    font-size: 30px;
+    font-size: 35px;
     user-select: none;
     pointer-events: none;
+    transition: transform 0.2s ease;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 #score, #timer, #combo-area {
     position: absolute;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-weight: 700;
+    color: var(--white-color);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
     z-index: 5;
-    background-color: rgba(0,0,0,0.2);
-    padding: 5px 15px;
-    border-radius: 15px;
-    border: 2px solid rgba(255,255,255,0.5);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.25);
+    padding: 8px 18px;
+    border-radius: 20px;
     font-size: 20px;
+    min-width: 80px;
+    text-align: center;
 }
 
 #score {
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
 }
 
 #timer {
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
 }
 
 #combo-area {
-    top: 60px; /* Adjusted position */
-    left: 10px;
-    color: #FFEB3B;
-    background-color: rgba(255, 100, 100, 0.3);
+    top: 70px;
+    left: 15px;
+    color: var(--white-color);
+    background-color: rgba(243, 156, 18, 0.8);
+    transform-origin: left center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+#combo-area.hidden {
+    transform: scale(0.8);
+    opacity: 0;
+    display: block !important; /* Override display:none for animation */
+}
+
 
 #fever-time {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.5);
-    font-size: 48px;
-    font-weight: bold;
-    color: #ff4081;
-    text-shadow: 3px 3px 0px #fff, -3px -3px 0px #fff, 3px -3px 0px #fff, -3px 3px 0px #fff;
-    animation: fever-animation 0.5s infinite alternate;
+    transform: translate(-50%, -50%);
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--white-color);
+    animation: fever-pulse 0.5s infinite alternate;
     z-index: 10;
 }
 
-@keyframes fever-animation {
-    from { transform: translate(-50%, -50%) scale(1.5) rotate(-5deg); }
-    to { transform: translate(-50%, -50%) scale(1.6) rotate(5deg); }
+@keyframes fever-pulse {
+    from { transform: translate(-50%, -50%) scale(1); }
+    to { transform: translate(-50%, -50%) scale(1.1); }
 }
 
 #game-container.fever {
-    animation: fever-bg 0.5s infinite alternate;
+    animation: fever-glow 0.5s infinite alternate;
 }
 
-@keyframes fever-bg {
-    from { box-shadow: 0 0 20px 10px #ff4081, 0 0 30px 20px #FFEB3B; }
-    to { box-shadow: 0 0 20px 10px #FFEB3B, 0 0 30px 20px #ff4081; }
+@keyframes fever-glow {
+    from { box-shadow: 0 0 25px 10px var(--secondary-color), 0 0 35px 20px var(--white-color); }
+    to { box-shadow: 0 0 25px 15px var(--primary-color), 0 0 35px 25px var(--white-color); }
 }
 
 #game-over p {
-    font-size: 36px;
-    font-weight: bold;
-    color: white;
-    text-shadow: 2px 2px 4px #000;
-    margin: 20px 0;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--white-color);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    margin: 25px 0;
 }
-
 
 #penalty-box {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 36px;
-    font-weight: bold;
-    color: #D32F2F;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px 40px;
-    border-radius: 10px;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--danger-color);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 25px 50px;
+    border-radius: 15px;
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     white-space: nowrap;
+    animation: penalty-shake 0.5s ease;
 }
+
+@keyframes penalty-shake {
+    0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+    20%, 60% { transform: translate(-50%, -50%) translateX(-10px); }
+    40%, 80% { transform: translate(-50%, -50%) translateX(10px); }
+}
+
 
 .speech-bubble {
     position: absolute;
-    background-color: #fff;
-    border: 2px solid #333;
-    border-radius: 10px;
-    padding: 5px 10px;
-    font-size: 14px;
-    font-weight: bold;
+    background-color: var(--white-color);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 15px;
+    font-size: 15px;
+    font-weight: 700;
     white-space: nowrap;
     z-index: 15;
-    animation: fadeOutUp 1.5s forwards;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    animation: pop-up 1.5s forwards ease-out;
 }
 
 .score-popup {
     position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-    color: #FFEB3B;
-    text-shadow: 1px 1px 2px #000;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     z-index: 15;
-    animation: fadeOutUp 1s forwards;
+    animation: pop-up 1s forwards ease-out;
 }
 
-@keyframes fadeOutUp {
+@keyframes pop-up {
     from {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(0.8);
     }
     to {
         opacity: 0;
-        transform: translateY(-50px);
+        transform: translateY(-60px) scale(1.2);
     }
 }
 
